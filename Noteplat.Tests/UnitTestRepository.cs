@@ -37,9 +37,18 @@ public class UnitTestRepository : IRepository
             return _filename;
         });
     }
+    public async Task<string> PickSaveFile()
+    {
+        return await Task.Run(() => {
+            return _filename;
+        });
+    }
 
     public void Save(string filename, string contents)
     {
         Files[filename] = contents;
     }
+
+    public bool FileExists(string filename) => Files.ContainsKey(filename);
+    public string FileReadAllText(string filename) => Files[filename];
 }

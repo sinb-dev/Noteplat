@@ -11,4 +11,7 @@ public interface IRepository
     string Load(string filename);
     void Save(string filename, string contents);
     Task<string> PickFile();
+    Task<string> PickSaveFile();
+    bool FileExists(string filename);
+    string FileReadAllText(string filename);
 }

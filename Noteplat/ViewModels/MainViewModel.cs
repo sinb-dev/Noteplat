@@ -32,12 +32,12 @@ public class MainViewModel : ViewModelBase
     async Task loadCommand()
     {
         string path = await _repository.PickFile();
-        if (File.Exists(path))
+        if (_repository.FileExists(path))
         {
             TextDocument = new TextDocument()
             {
                 Filename = path,
-                Text = File.ReadAllText(path)
+                Text = _repository.FileReadAllText(path)
             };
             SaveCommand = ReactiveCommand.Create(saveCommand);
         }

@@ -1,6 +1,7 @@
 using Noteplat.Models;
 using Noteplat.ViewModels;
 using ReactiveUI;
+using System.Reactive.Threading.Tasks;
 using System.Text;
 namespace Noteplat.Tests
 {
@@ -8,38 +9,55 @@ namespace Noteplat.Tests
     public class MainViewModelTests
     {
 
-        UnitTestRepository _repository = new UnitTestRepository();
-        [Fact]
-        public void SaveText()
-        {
-            var filename =Path.GetTempFileName();
-            MainViewModel mv = new(_repository);
-
-            //Tests
-            mv.TextDocument = new TextDocument(filename, GenerateLargeText(10000));
-            Assert.Equal(filename,mv.TextDocument.Filename);
-            
-            //Save document
-            mv.SaveCommand.Execute();
-
-            //Check document exists
-            Assert.True(File.Exists(filename));
-            File.Delete(mv.TextDocument.Filename);
-        }
 
         [Fact]
-        public void LoadText()
+        public async void LoadAndSaveText()
         {
-            var filename =Path.GetTempFileName();
+            UnitTestRepository _repository = new UnitTestRepository();
+            //Create some file
+            var filename = Path.GetTempFileName();
             var contents = "Hello";
             _repository.Save(filename, contents);
 
+            //Load the file using commands
             MainViewModel mv = new(_repository);
-
+            Assert.Null(mv.SaveCommand);
 
             _repository.SetFilePick(filename);
-            mv.LoadCommand.Execute();
+            await mv.LoadCommand.Execute().ToTask();
 
+            Assert.NotNull(mv.SaveCommand);
+            Assert.Equal(contents, mv.TextDocument.Text);
+
+            //Change contents and save
+            mv.TextDocument = new TextDocument(filename, GenerateLargeText(10000));
+
+            //Save document
+            mv.SaveCommand.Execute();
+        }
+
+
+        [Fact]
+        public async void SaveAsTest()
+        {
+            UnitTestRepository _repository = new UnitTestRepository();
+            var filename = Path.GetTempFileName();
+            var contents = "Testing Save As";
+
+            MainViewModel mv = new(_repository);
+            Assert.Null(mv.SaveCommand); // In order to use the SaveCommand a file must be loaded first
+
+            Assert.NotNull(mv.SaveAsCommand); //Save as should always be possible
+
+            mv.TextDocument = new TextDocument(filename, contents);
+
+            //Setup the repository to pick filename
+            _repository.SetFilePick(filename);
+            await mv.SaveAsCommand.Execute().ToTask();
+
+            //Reset mv
+            mv = new(_repository);
+            await mv.LoadCommand.Execute().ToTask();
             Assert.Equal(contents, mv.TextDocument.Text);
         }
 

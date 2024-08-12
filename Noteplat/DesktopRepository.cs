@@ -33,7 +33,7 @@ public class DesktopRepository : IRepository
 
         return path;
     }
-    public async Task<string> SaveAsFile()
+    public async Task<string> PickSaveFile()
     {
         var window = MainWindow.GetMainWindow() ?? throw new Exception("Unable to open file dialog");
         FilePickerSaveOptions options = new();
@@ -46,4 +46,6 @@ public class DesktopRepository : IRepository
 
         return path;
     }
+    public bool FileExists(string filename) => File.Exists(filename);
+    public string FileReadAllText(string filename) => File.ReadAllText(filename);
 }
