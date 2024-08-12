@@ -14,6 +14,7 @@ namespace Noteplat.ViewModels;
 public class MainViewModel : ViewModelBase
 {
     public ReactiveCommand<Unit, Unit> SaveCommand { get; set; }
+    public ReactiveCommand<Unit, Unit>? SaveAsCommand { get; set; } = null;
     public ReactiveCommand<Unit, Unit> LoadCommand { get; set; }
 
     TextDocument _textDocument = new TextDocument();
@@ -24,9 +25,8 @@ public class MainViewModel : ViewModelBase
     }
     public MainViewModel(IRepository repository) : base(repository)
     {
-        SaveCommand = ReactiveCommand.Create(saveCommand);
         LoadCommand = ReactiveCommand.CreateFromTask(loadCommand);
-
+        SaveAsCommand = ReactiveCommand.CreateFromTask(saveAsCommand);
     }
 
     async Task loadCommand()
@@ -39,12 +39,18 @@ public class MainViewModel : ViewModelBase
                 Filename = path,
                 Text = File.ReadAllText(path)
             };
+            SaveCommand = ReactiveCommand.Create(saveCommand);
         }
     }
     void saveCommand()
     {
-        //_repository.Save(_textDocument.Filename, _textDocument.Text);
-        File.WriteAllText(_textDocument.Filename, _textDocument.Text);
+        _repository.Save(_textDocument.Filename, _textDocument.Text);
+    }
+
+    async Task saveAsCommand()
+    {
+        TextDocument.Filename = await _repository.PickFile();
+        _repository.Save(_textDocument.Filename, _textDocument.Text);
     }
 
     

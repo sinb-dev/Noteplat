@@ -33,4 +33,17 @@ public class DesktopRepository : IRepository
 
         return path;
     }
+    public async Task<string> SaveAsFile()
+    {
+        var window = MainWindow.GetMainWindow() ?? throw new Exception("Unable to open file dialog");
+        FilePickerSaveOptions options = new();
+        var result = await window.StorageProvider.SaveFilePickerAsync(options);
+        string path = "";
+        if (result != null)
+        {
+            path = result.Path.LocalPath;
+        }
+
+        return path;
+    }
 }
