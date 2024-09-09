@@ -25,7 +25,7 @@ public class MainViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _textDocument, value, nameof(TextDocument));
     }
 
-    public MainViewModel(IRepository repository) : base(repository)
+    public MainViewModel()
     {
         CurrentViewModel = new EditViewModel();
         LoadCommand = ReactiveCommand.CreateFromTask(loadCommand);
@@ -35,25 +35,25 @@ public class MainViewModel : ViewModelBase
     async Task loadCommand()
     {
         string path = await _repository.PickFile();
-        if (_repository.FileExists(path))
+        if (File.Exists(path))
         {
             TextDocument = new TextDocument()
             {
                 Filename = path,
-                Text = _repository.FileReadAllText(path)
+                Text = File.ReadAllText(path)
             };
             SaveCommand = ReactiveCommand.Create(saveCommand);
         }
     }
     void saveCommand()
     {
-        _repository.Save(_textDocument.Filename, _textDocument.Text);
+        File.WriteAllText(_textDocument.Filename, _textDocument.Text);
     }
 
     async Task saveAsCommand()
     {
         TextDocument.Filename = await _repository.PickFile();
-        _repository.Save(_textDocument.Filename, _textDocument.Text);
+        File.WriteAllText(_textDocument.Filename, _textDocument.Text);
     }
 
     

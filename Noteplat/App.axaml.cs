@@ -12,7 +12,6 @@ public partial class App : Application
     {
         AvaloniaXamlLoader.Load(this);
     }
-    static IRepository repository = new DesktopRepository();
 
     public override void OnFrameworkInitializationCompleted()
     {
@@ -20,14 +19,14 @@ public partial class App : Application
         {
             desktop.MainWindow = new MainWindow
             {
-                DataContext = new MainViewModel(repository)
+                DataContext = new MainViewModel()
             };
         }
         else if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
         {
             singleViewPlatform.MainView = new MainView
             {
-                DataContext = new MainViewModel(repository)
+                DataContext = new MainViewModel()
             };
         }
 

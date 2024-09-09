@@ -13,17 +13,15 @@ namespace Noteplat.Tests
         [Fact]
         public async void LoadAndSaveText()
         {
-            UnitTestRepository _repository = new UnitTestRepository();
             //Create some file
             var filename = Path.GetTempFileName();
             var contents = "Hello";
-            _repository.Save(filename, contents);
+            File.WriteAllText(filename, contents);
 
             //Load the file using commands
-            MainViewModel mv = new(_repository);
+            MainViewModel mv = new();
             Assert.Null(mv.SaveCommand);
 
-            _repository.SetFilePick(filename);
             await mv.LoadCommand.Execute().ToTask();
 
             Assert.NotNull(mv.SaveCommand);
@@ -40,11 +38,10 @@ namespace Noteplat.Tests
         [Fact]
         public async void SaveAsTest()
         {
-            UnitTestRepository _repository = new UnitTestRepository();
             var filename = Path.GetTempFileName();
             var contents = "Testing Save As";
 
-            MainViewModel mv = new(_repository);
+            MainViewModel mv = new();
             Assert.Null(mv.SaveCommand); // In order to use the SaveCommand a file must be loaded first
 
             Assert.NotNull(mv.SaveAsCommand); //Save as should always be possible
@@ -52,11 +49,10 @@ namespace Noteplat.Tests
             mv.TextDocument = new TextDocument(filename, contents);
 
             //Setup the repository to pick filename
-            _repository.SetFilePick(filename);
             await mv.SaveAsCommand.Execute().ToTask();
 
             //Reset mv
-            mv = new(_repository);
+            mv = new();
             await mv.LoadCommand.Execute().ToTask();
             Assert.Equal(contents, mv.TextDocument.Text);
         }
