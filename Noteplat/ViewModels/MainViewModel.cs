@@ -37,44 +37,10 @@ public class MainViewModel : ViewModelBase
         _currentViewModel = _editViewModel;
     }
 
-    async Task loadCommand()
-    {
-        string path = await PickFile();
-        if (File.Exists(path))
-        {
-            TextDocument = new TextDocument()
-            {
-                Filename = path,
-                Text = File.ReadAllText(path)
-            };
-        }
-    }
 
     public void ViewSettings() => CurrentViewModel = _settingsViewModel;
     public void ViewEdit() => CurrentViewModel = _editViewModel;
 
-    void saveCommand()
-    {
-        File.WriteAllText(_textDocument.Filename, _textDocument.Text);
-    }
 
-    async Task saveAsCommand()
-    {
-        TextDocument.Filename = await PickFile();
-        File.WriteAllText(_textDocument.Filename, _textDocument.Text);
-    }
-
-    public async Task<string> PickFile()
-    {
-        var window = MainWindow.GetMainWindow() ?? throw new Exception("Unable to open file dialog");
-        FilePickerSaveOptions options = new();
-        var result = await window.StorageProvider.SaveFilePickerAsync(options);
-        string path = "";
-        if (result != null)
-        {
-            path = result.Path.LocalPath;
-        }
-
-        return path;
-    }
+    
 }

@@ -16,7 +16,7 @@ namespace Noteplat.Tests
             File.WriteAllText(filename, contents);
 
             //Load the file using commands
-            MainViewModel mv = new();
+            EditViewModel mv = new();
             //Assert.Null(mv.SaveCommand);
 
             await mv.LoadCommand.Execute().ToTask();
@@ -37,10 +37,10 @@ namespace Noteplat.Tests
             var filename = "file.txt";
             var contents = "Testing Save As";
 
-            MainViewModel mv = new();
-            //Assert.Null(mv.SaveCommand); // In order to use the SaveCommand a file must be loaded first
+            EditViewModel mv = new();
 
-            //Assert.NotNull(mv.SaveAsCommand); //Save as should always be possible
+            Assert.NotNull(mv.SaveAsCommand); //Save as should always be possible
+            filename = await mv.PickFile();
 
             mv.TextDocument = new TextDocument(filename, contents);
 
