@@ -9,4 +9,7 @@ public class ViewModelBase : ReactiveObject
     {
         _repository = repository;
     }
+    public ViewModelBase() 
+    { 
+    }
 }

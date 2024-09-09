@@ -11,23 +11,6 @@
          to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
     <vm:MainViewModel />
   </Design.DataContext>
-	<DockPanel>
-		<Menu DockPanel.Dock="Top">
-			<MenuItem Header="_File">
-				<MenuItem Header="_Open..." Command="{Binding LoadCommand}"/>
-				<MenuItem Header="_Save" Command="{Binding SaveCommand}"/>
-				<MenuItem Header="Save as" Command="{Binding SaveAsCommand}"/>
-				<Separator/>
-				<MenuItem Header="_Exit"/>
-			</MenuItem>
-			<MenuItem Header="_Edit">
-				<MenuItem Header="Copy"/>
-				<MenuItem Header="Paste"/>
-			</MenuItem>
-		</Menu>
-		<StackPanel Orientation="Vertical">
-			<TextBox AcceptsReturn="True" Height="600" Text="{Binding TextDocument.Text}"></TextBox>
-		</StackPanel>
-	</DockPanel>
+	<ContentControl Content="{Binding CurrentViewModel}" />
   
 </UserControl>

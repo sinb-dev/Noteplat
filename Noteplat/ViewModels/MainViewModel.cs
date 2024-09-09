@@ -16,6 +16,7 @@ public class MainViewModel : ViewModelBase
     public ReactiveCommand<Unit, Unit> SaveCommand { get; set; }
     public ReactiveCommand<Unit, Unit>? SaveAsCommand { get; set; } = null;
     public ReactiveCommand<Unit, Unit> LoadCommand { get; set; }
+    public ViewModelBase CurrentViewModel;
 
     TextDocument _textDocument = new TextDocument();
     public TextDocument TextDocument
@@ -23,8 +24,10 @@ public class MainViewModel : ViewModelBase
         get => _textDocument;
         set => this.RaiseAndSetIfChanged(ref _textDocument, value, nameof(TextDocument));
     }
+
     public MainViewModel(IRepository repository) : base(repository)
     {
+        CurrentViewModel = new EditViewModel();
         LoadCommand = ReactiveCommand.CreateFromTask(loadCommand);
         SaveAsCommand = ReactiveCommand.CreateFromTask(saveAsCommand);
     }
