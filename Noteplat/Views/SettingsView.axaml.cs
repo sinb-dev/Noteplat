@@ -4,9 +4,9 @@ using Avalonia.Markup.Xaml;
 
 namespace Noteplat.Views;
 
-public partial class EditView : UserControl
+public partial class SettingsView : UserControl
 {
-    public EditView()
+    public SettingsView()
     {
         InitializeComponent();
     }

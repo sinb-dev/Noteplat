@@ -1,0 +1,28 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Noteplat.Views.SettingsView">
+	<Grid ColumnDefinitions="* *" RowDefinitions="* 50" Margin="20">
+		<StackPanel Grid.Column="0" Grid.Row="0" Spacing="5" HorizontalAlignment="Left">
+			<Label>File type</Label>
+			<ComboBox>
+				<ComboBoxItem>Text</ComboBoxItem>
+				<ComboBoxItem>Markdown</ComboBoxItem>
+			</ComboBox>
+			<Label>Encryption key</Label>
+			<TextBox Watermark="Enter encryption key" Width="200"></TextBox>
+		</StackPanel>
+		<StackPanel Grid.Column="1" Grid.Row="0">
+			<WrapPanel VerticalAlignment="Center">
+				<Label>Show preview pane</Label>
+				<ToggleSwitch OffContent="" OnContent=""></ToggleSwitch>
+			</WrapPanel>
+		</StackPanel>
+		<StackPanel Orientation="Horizontal" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Right">
+			<Button Command="{Binding CancelCommand}">Cancel</Button>
+			<Button>Save</Button>
+		</StackPanel>
+	</Grid>
+</UserControl>

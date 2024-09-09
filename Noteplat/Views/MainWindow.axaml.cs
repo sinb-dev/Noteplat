@@ -4,7 +4,7 @@ namespace Noteplat.Views;
 
 public partial class MainWindow : Window
 {
-    static MainWindow Instance;
+    static MainWindow? Instance;
     public MainWindow()
     {
         InitializeComponent();
@@ -12,6 +12,6 @@ public partial class MainWindow : Window
             Instance = this;
     }
 
-    public static MainWindow GetMainWindow() => Instance;
+    public static MainWindow? GetMainWindow() => Instance;
         
 }

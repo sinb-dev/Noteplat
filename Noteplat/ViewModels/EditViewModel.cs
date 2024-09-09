@@ -34,4 +34,8 @@ public class EditViewModel : ViewModelBase
     {
 
     }
+    public void SettingsCommand()
+    {
+        MainViewModel.Instance.ViewSettings();
+    }
 }
