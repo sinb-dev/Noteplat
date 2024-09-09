@@ -14,9 +14,6 @@ namespace Noteplat.ViewModels;
 
 public class MainViewModel : ViewModelBase
 {
-    public ReactiveCommand<Unit, Unit> SaveCommand { get; set; }
-    public ReactiveCommand<Unit, Unit>? SaveAsCommand { get; set; } = null;
-    public ReactiveCommand<Unit, Unit> LoadCommand { get; set; }
     EditViewModel _editViewModel = new();
     SettingsViewModel _settingsViewModel = new();
     ViewModelBase _currentViewModel;
@@ -38,10 +35,6 @@ public class MainViewModel : ViewModelBase
         Instance = this;
 
         _currentViewModel = _editViewModel;
-        LoadCommand = ReactiveCommand.CreateFromTask(loadCommand);
-        SaveCommand = ReactiveCommand.Create( () => { } );
-        SaveAsCommand = ReactiveCommand.CreateFromTask(saveAsCommand);
-        
     }
 
     async Task loadCommand()
